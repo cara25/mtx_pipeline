@@ -38,28 +38,27 @@ To set up the data, put the following into the `mtx_pipeline/raw` folder:
 - Metabolomics bridge: `RA_MTX_CLP_GLOBAL_PROFILE_child_parentID_Aug1.xlsx`
 
 Running `mtx_pipeline/src/merging_all_data.ipynb` will preprocess and merge all data into the following 11 combinations of demographics, proteomics, and metabolomics:
-- `mtx_pipeline/processed/full_datasets` directory
-- Demographics: `mtx_pipeline/processed/full_datasets/demographics.csv`
-- Log2 scale proteomics: `mtx_pipeline/processed/full_datasets/log_proteins.csv`
-- *Linear scale proteomics: `mtx_pipeline/processed/full_datasets/linear_proteins.csv`
-- Metabolomics: `mtx_pipeline/processed/full_datasets/metabolomics.csv`
-- Log2 scale proteomics + demographics: `mtx_pipeline/processed/full_datasets/log_proteomics_demographics.csv`
-- *Linear scale proteomics + demographics: `mtx_pipeline/processed/full_datasets/lin_proteomics_demographics.csv`
-- Demographics + metabolomics: `mtx_pipeline/processed/full_datasets/demographics_metabolomics.csv`
-- Log2 scale proteomics + metabolomics: `mtx_pipeline/processed/full_datasets/log_proteomics_metabolomics.csv`
-- Linear scale proteomics + metabolomics: `mtx_pipeline/processed/full_datasets/lin_proteomics_metabolomics.csv`
-- Log2 proteomics + demographics + metabolomics: `mtx_pipeline/processed/full_datasets/log_proteomics_demographics_metabolomics.csv`
-- Linear proteomics + demographics + metabolomics: `mtx_pipeline/processed/full_datasets/lin_proteomics_demographics_metabolomics.csv`
+- Demographics: `mtx_pipeline/processed/demographics.csv`
+- Log2 scale proteomics: `mtx_pipeline/processed/log_proteins.csv`
+- **Linear scale proteomics**: `mtx_pipeline/processed/linear_proteins.csv`
+- Metabolomics: `mtx_pipeline/processed/metabolomics.csv`
+- Log2 scale proteomics + demographics: `mtx_pipeline/processed/log_proteomics_demographics.csv`
+- **Linear scale proteomics + demographics**: `mtx_pipeline/processed/lin_proteomics_demographics.csv`
+- Demographics + metabolomics: `mtx_pipeline/processed/demographics_metabolomics.csv`
+- Log2 scale proteomics + metabolomics: `mtx_pipeline/processed/log_proteomics_metabolomics.csv`
+- Linear scale proteomics + metabolomics: `mtx_pipeline/processed/lin_proteomics_metabolomics.csv`
+- Log2 proteomics + demographics + metabolomics: `mtx_pipeline/processed/log_proteomics_demographics_metabolomics.csv`
+- Linear proteomics + demographics + metabolomics: `mtx_pipeline/processed/lin_proteomics_demographics_metabolomics.csv`
 
 Then, running `mtx_pipeline/src/split_data.sh` will use `split_data.py` to create 5-fold, 10-fold, and loocv splits using random_state=24 of all the datasets in
 `5_fold`, `10_fold`, and `loocv`.
 The subdirectories of each of these (to access the type of data being trained on) include (for example):
 - Demographics: `mtx_pipeline/processed/split_data/5_fold/demographics`
 - Log2 scale proteomics: `mtx_pipeline/processed/split_data/5_fold/log2`
-- *Linear scale proteomics: `mtx_pipeline/processed/split_data/5_fold/linear`
+- **Linear scale proteomics**: `mtx_pipeline/processed/split_data/5_fold/linear`
 - Metabolomics: `mtx_pipeline/processed/split_data/5_fold/metabolomics`
 - Log2 scale proteomics + demographics: `mtx_pipeline/processed/split_data/5_fold/log2_prot_demo`
-- *Linear scale proteomics + demographics: `mtx_pipeline/processed/split_data/5_fold/lin_prot_demo`
+- **Linear scale proteomics + demographics**: `mtx_pipeline/processed/split_data/5_fold/lin_prot_demo`
 - Demographics + metabolomics: `mtx_pipeline/processed/split_data/5_fold/demo_metabolomics`
 - Log2 scale proteomics + metabolomics: `mtx_pipeline/processed/split_data/5_fold/log2_prot_met`
 - Linear scale proteomics + metabolomics: `mtx_pipeline/processed/split_data/5_fold/lin_prot_met`
