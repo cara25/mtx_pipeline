@@ -1,9 +1,9 @@
 # Predicting Methotrexate Response in Treatment-Naïve Early Arthritis Patients Through the Blood Proteome
 **Authors: Cara Chang, Benjamin Hur, John M. Davis III, Jaeyun Sung**
 
-**Currently unpublished**
+Currently unpublished
 
-For a more complete overview of this project, see my summer internship poster, presented at Mayo Clinic to the Summer Undergraduate Research Fellowship and Public Health Internship Group programs.
+For a more complete overview of this project, see my summer internship poster `poster.pdf`, presented at Mayo Clinic to the Summer Undergraduate Research Fellowship and Public Health Internship Group programs.
 It has been a pleasure to work as part of the Sung Lab this summer.
 
 ## Introduction and Study Design
