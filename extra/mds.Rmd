@@ -1,0 +1,86 @@
+---
+title: "MDS analysis and visualization"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(MASS)
+```
+
+```{r}
+# import data
+linear_path = "/Users/chang.cara/Desktop/proteomics/processed_data/full_datasets/linear_proteins.csv"
+log2_path = "/Users/chang.cara/Desktop/proteomics/processed_data/full_datasets/log_proteins.csv"
+linear_data = read.csv(linear_path)
+log2_data = read.csv(log2_path)
+
+# drop mtx variable and the EAC ID column
+linear_X <- linear_data[, !names(linear_data) %in% c("mtx_binary", "EAC_ID")]
+log2_X <- log2_data[, !names(log2_data) %in% c("mtx_binary", "EAC_ID")]
+```
+
+
+```{r}
+## MDS PLOT LINEARIZED PROTEINS ##
+lin_distance_matrix <- dist(linear_X)
+
+# Perform MDS
+lin_mds_result <- isoMDS(lin_distance_matrix)
+lin_mds_coords <- as.data.frame(lin_mds_result$points)
+colnames(lin_mds_coords) <- c("Dim1", "Dim2")
+
+# Add the target variable back to the MDS coordinates
+lin_mds_coords$mtx_binary <- as.factor(linear_data$mtx_binary)
+```
+
+```{r}
+# Plot the MDS result using ggplot2
+ggplot(lin_mds_coords, aes(x = Dim1, y = Dim2, color=mtx_binary)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "MDS Plot", x = "Dimension 1", y = "Dimension 2")
+```
+
+```{r}
+# Plot the MDS result using ggplot2
+ggplot(lin_mds_coords, aes(x = Dim1, y = Dim2, color=mtx_binary)) +
+  geom_point() +
+  theme_minimal() +
+  xlim(-100, 0) +
+  ylim(0, 100) +
+  labs(title = "MDS Plot", x = "Dimension 1", y = "Dimension 2")
+```
+
+```{r}
+## MDS PLOT LOG2 PROTEINS ##
+log_distance_matrix <- dist(log2_X)
+
+# Perform MDS
+log_mds_result <- isoMDS(log_distance_matrix)
+log_mds_coords <- as.data.frame(log_mds_result$points)
+colnames(log_mds_coords) <- c("Dim1", "Dim2")
+
+# Add the target variable back to the MDS coordinates
+log_mds_coords$mtx_binary <- as.factor(log2_data$mtx_binary)
+```
+
+```{r}
+# Plot the MDS result using ggplot2
+p <- ggplot(log_mds_coords, aes(x = Dim1, y = Dim2, color=mtx_binary)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Multidimensional Scaling Plot", subtitle="log2 scale",
+       x = "Dimension 1", y = "Dimension 2",
+       color = "MTX Response")  +
+  scale_color_manual(
+    values = c("0" = "red", "1" = "blue"), # Set colors for the legend items
+    labels = c("0" = "No Response", "1" = "Response") # Set labels for the legend items
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), # center
+    plot.subtitle = element_text(hjust = 0.5) 
+  )
+ggsave("MDS_Plot.svg", plot = p, device = "svg")
+```

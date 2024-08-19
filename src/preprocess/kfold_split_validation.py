@@ -1,4 +1,7 @@
 ## Data Validation for split_data.py ##
+## Currently outdated! Need to update dirs and code itself--multiple ys like log_y and linear_y is redundant
+## Also need to update inputs/outputs but can be done using same code as split_data.py
+## Could be modified to loop through these in the shell for validation if you want.
 
 import pandas as pd
 import numpy as np
