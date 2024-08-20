@@ -138,7 +138,11 @@ if __name__ == "__main__":
     seed = int(sys.argv[4])
 
     # create output directory for all the folders
-    output_dir = f'results/seed_{seed}'
+    current_dir = os.getcwd() # pipeline
+    parent_dir = os.path.dirname(current_dir) # machine_learning
+    grandparent_dir = os.path.dirname(parent_dir) # src
+    greatgrandparent_dir = os.path.dirname(grandparent_dir) # base
+    output_dir = os.path.join(greatgrandparent_dir, 'results', f'seed_{seed}')
     os.makedirs(output_dir, exist_ok=True)
     output_file = os.path.join(output_dir, f'{splits}_fold_{feat_sel}_{data_combo}_results.csv') # make a new results file
     output_txt = open(output_file,'w') # open it and clear any existing results

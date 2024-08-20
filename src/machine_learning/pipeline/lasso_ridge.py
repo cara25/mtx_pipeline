@@ -1,7 +1,9 @@
-def main(feat_sel, data_combo, splits, sel_dir, model_penalty, seed, threshold=0.005):
+def main(feat_sel, data_combo, splits, sel_dir, model_penalty, seed):
     # threshold set somewhat arbitrarily from visualizations in ridge_feature_selection_v2.ipynb.
     if "log" in data_combo:
         threshold = 0.0001
+    else:
+        threshold = 0.005
     print(f"Seed: {seed}, Feature Selection: {feat_sel}, Datasets: {data_combo}, Splits: {splits}")
     # retrieve paths for specified number of splits and type of data
     path_list = path_from_inputs(splits=splits, data_combo=data_combo, seed=seed)
@@ -12,7 +14,13 @@ def main(feat_sel, data_combo, splits, sel_dir, model_penalty, seed, threshold=0
         split_dir = 'loocv'
     # Ensure the output directory exists
     # Constructing a directory path using os.path.join() with the string
-    output_dir = os.path.join(os.getcwd(), seed_dir, split_dir, data_combo, sel_dir) # go into the correct fold --> linear or log2 --> lasso or ridge dir
+    current_dir = os.getcwd() # pipeline
+    parent_dir = os.path.dirname(current_dir) # machine_learning
+    grandparent_dir = os.path.dirname(parent_dir) # src
+    greatgrandparent_dir = os.path.dirname(grandparent_dir) # base
+    # Example of output dir:
+    # mtx_pipeline/processed/split_data/5_fold/linear/seed_42/lasso_subsets
+    output_dir = os.path.join(greatgrandparent_dir, "processed", "split_data", split_dir, data_combo, seed_dir, sel_dir)
     os.makedirs(output_dir, exist_ok=True)
     # initialize to store features picked during each fold training
     selected_feats_list = []
@@ -31,6 +39,8 @@ def main(feat_sel, data_combo, splits, sel_dir, model_penalty, seed, threshold=0
         if feat_sel == "L1":
             model = LogisticRegression(penalty=model_penalty, C=best_lambda, solver='liblinear', random_state=seed)
             model.fit(X_train, y_train)
+            # Not run: y_pred and y_pred_proba for pipeline purposes--no need to predict. can uncomment otherwise
+            #y_pred_proba = model.predict_proba(X_test)[:, 1]
         # FOR RIDGE ONLY:
         # Get the coefficients and zero out those below the threshold
         elif feat_sel == "L2":
@@ -41,9 +51,11 @@ def main(feat_sel, data_combo, splits, sel_dir, model_penalty, seed, threshold=0
             coefficients[np.abs(coefficients) < threshold] = 0
             # Assign the non-zero coefficients back to the model
             model.coef_ = coefficients
+            # calculated differently since the classifier predicts directly without probabilities so needs decision function to order
+            # then can use to calculate roc auc because the ordered values don't need to be between 0 and 1
+            #y_pred_proba = model.decision_function(X_test)
         # predict on test
-        y_pred = model.predict(X_test)
-        y_pred_proba = model.predict_proba(X_test)[:, 1]
+        #y_pred = model.predict(X_test)
         # Identify non-zero coefficients
         non_zero_coefs = model.coef_[0] != 0
         selected_features = X_train.columns[non_zero_coefs]
@@ -107,7 +119,7 @@ if __name__ == "__main__":
     import seaborn as sns
     import matplotlib.pyplot as plt
     from sklearn.model_selection import KFold, StratifiedKFold
-    from sklearn.linear_model import LogisticRegression, Lasso, LassoCV, LogisticRegressionCV
+    from sklearn.linear_model import LogisticRegression, Lasso, LassoCV, LogisticRegressionCV, RidgeClassifier
     import os
     from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error, r2_score, \
     roc_curve, auc, precision_score, recall_score, confusion_matrix, precision_recall_curve

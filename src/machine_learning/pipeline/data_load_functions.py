@@ -9,17 +9,20 @@ def path_from_inputs(splits, data_combo, seed, feat_sel='none'):
     # these are initialized for paths later
     feat_sel_type = {'none': '', 'L1': 'lasso_subsets', 'L2': 'ridge_subsets', 'enet': 'elastic_net_subsets'}
     # go from the pipeline folder to the processed/split_data folder
-    current_dir = os.getcwd()
-    parent_dir = os.path.dirname(current_dir)
-    grandparent_dir = os.path.dirname(parent_dir)
-    base_dir = os.path.join(grandparent_dir, 'processed', 'split_data')
+    current_dir = os.getcwd() # pipeline
+    parent_dir = os.path.dirname(current_dir) # machine_learning
+    grandparent_dir = os.path.dirname(parent_dir) # src
+    greatgrandparent_dir = os.path.dirname(grandparent_dir) # base
+    base_dir = os.path.join(greatgrandparent_dir, 'processed', 'split_data')
     if splits >= 5 and splits <= 10:
         split_str = f'{splits}_fold'
     else:
         split_str = 'loocv'
     if feat_sel != "none": # if feature selection method specified, include seed in path
         seed_str = f'seed_{seed}'
-        dir_path = os.path.join(base_dir, seed_str, split_str, data_combo, feat_sel_type[feat_sel])
+        # Example used in lasso_ridge.py:
+        # mtx_pipeline/processed/split_data/5_fold/linear/seed_42/lasso_subsets
+        dir_path = os.path.join(base_dir, split_str, data_combo, seed_str, feat_sel_type[feat_sel])
     else:
         # there is no seed in the initial data routing, only comes into play with feature selection
         dir_path = os.path.join(base_dir, split_str, data_combo)
