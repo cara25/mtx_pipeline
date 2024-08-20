@@ -1,4 +1,4 @@
-name: /users/chang.cara/desktop/proteomics/myenv
+name: mtxenv
 channels:
   - conda-forge
   - defaults
@@ -234,4 +234,3 @@ dependencies:
   - zlib=1.3.1=hfb2fe0b_1
   - zstandard=0.23.0=py312h721a963_0
   - zstd=1.5.6=hb46c0d2_0
-prefix: /users/chang.cara/desktop/proteomics/myenv
