@@ -27,7 +27,7 @@ This pipeline was designed to be reusable, so the code is as modularized as poss
 
 Simplified directory structure:
 
-<img width="955" alt="mtx_workflow" src="https://github.com/user-attachments/assets/6e4c8003-0377-40c1-9aee-066fdddaaff2">
+<img width="1123" alt="Screenshot 2024-08-22 at 11 17 22 AM" src="https://github.com/user-attachments/assets/71437b6b-26e1-4cae-966e-63ae088dfe74">
 
 ### Processing and Splitting
 To set up the data, put the following into the `mtx_pipeline/raw` folder:
